@@ -11,7 +11,7 @@ public class SpawnManager : MonoBehaviour
 
     void Start()
     {
-        InvokeRepeating("SpawnEnemy", 1, 0.1f);
+        InvokeRepeating("SpawnEnemy", 1, 5f);
     }
 
     private Vector3 RandomSpawnPosition()
