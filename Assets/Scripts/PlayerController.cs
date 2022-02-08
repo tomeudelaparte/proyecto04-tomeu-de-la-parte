@@ -9,6 +9,9 @@ public class PlayerController : MonoBehaviour
     private GameObject focalPoint;
 
     private bool hasPowerUp;
+    private float powerUpForce = 100f;
+
+    public GameObject[] powerUpIndicators;
 
     void Start()
     {
@@ -20,15 +23,50 @@ public class PlayerController : MonoBehaviour
     {
         float verticalInput = Input.GetAxis("Vertical");
         playerRigidbody.AddForce(focalPoint.transform.forward * speed * verticalInput);
+
+        for (int i = 0; i < powerUpIndicators.Length; i++)
+        {
+            powerUpIndicators[i].transform.position = transform.position;
+            powerUpIndicators[i].transform.Rotate(Vector3.up * 100 * Time.deltaTime);
+        }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.transform.CompareTag("PowerUp"))
+        if (other.transform.CompareTag("Powerup"))
         {
             hasPowerUp = true;
 
+            StartCoroutine(PowerUpCountDown());
+
             Destroy(other.gameObject);
         }
+    }
+
+    private void OnCollisionEnter(Collision other)
+    {
+        if (hasPowerUp && other.gameObject.CompareTag("Enemy"))
+        {
+            Rigidbody enemyRigidbody = other.gameObject.GetComponent<Rigidbody>();
+
+            Vector3 awayFromPlayer = (other.gameObject.transform.position - transform.position).normalized;
+
+            enemyRigidbody.AddForce(awayFromPlayer * powerUpForce, ForceMode.Impulse);
+        }
+    }
+
+
+    private IEnumerator PowerUpCountDown()
+    {
+        for (int i = 0; i < powerUpIndicators.Length; i++)
+        {
+            powerUpIndicators[i].SetActive(true);
+
+            yield return new WaitForSeconds(2);
+
+            powerUpIndicators[i].SetActive(false);
+        }
+
+        hasPowerUp = false;
     }
 }

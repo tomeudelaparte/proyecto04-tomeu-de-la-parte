@@ -4,18 +4,15 @@ using UnityEngine;
 
 public class MoveRight : MonoBehaviour
 {
-
     private float xRange = 10;
     private float speed = 5;
 
-    // Update is called once per frame
     void Update()
     {
         transform.Translate(Vector3.right * speed * Time.deltaTime);
 
         if(transform.position.x >= xRange)
         {
-
             transform.position = new Vector3(xRange, transform.position.y, 0);
             speed *= -1;
         }

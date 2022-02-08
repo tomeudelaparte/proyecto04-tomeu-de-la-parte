@@ -11,7 +11,7 @@ public class SpawnManager : MonoBehaviour
 
     void Start()
     {
-        InvokeRepeating("SpawnEnemy", 1, 5f);
+        SpawnEnemyWave(5);
     }
 
     private Vector3 RandomSpawnPosition()
@@ -25,5 +25,13 @@ public class SpawnManager : MonoBehaviour
     private void SpawnEnemy()
     {
         Instantiate(enemyPrefab, RandomSpawnPosition(), transform.rotation);
+    }
+
+    private void SpawnEnemyWave(int totalEnemies)
+    {
+        for (int i = 0; i < totalEnemies; i++)
+        {
+            SpawnEnemy();
+        }
     }
 }
