@@ -23,17 +23,11 @@ public class PlayerController : MonoBehaviour
     {
         float verticalInput = Input.GetAxis("Vertical");
         playerRigidbody.AddForce(focalPoint.transform.forward * speed * verticalInput);
-
-        for (int i = 0; i < powerUpIndicators.Length; i++)
-        {
-            powerUpIndicators[i].transform.position = transform.position;
-            powerUpIndicators[i].transform.Rotate(Vector3.up * 100 * Time.deltaTime);
-        }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.transform.CompareTag("Powerup"))
+        if (other.transform.CompareTag("Powerup") && !hasPowerUp)
         {
             hasPowerUp = true;
 
@@ -45,7 +39,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionEnter(Collision other)
     {
-        if (hasPowerUp && other.gameObject.CompareTag("Enemy"))
+        if (hasPowerUp && other.gameObject.CompareTag("Enemy") && hasPowerUp)
         {
             Rigidbody enemyRigidbody = other.gameObject.GetComponent<Rigidbody>();
 

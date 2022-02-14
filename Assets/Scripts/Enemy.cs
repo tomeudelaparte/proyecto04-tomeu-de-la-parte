@@ -8,6 +8,8 @@ public class Enemy : MonoBehaviour
     private GameObject player;
     [SerializeField] private float speed = 10;
 
+    private float minHeight = -1f;
+
     void Start()
     {
         enemyRigidbody = GetComponent<Rigidbody>();
@@ -18,5 +20,10 @@ public class Enemy : MonoBehaviour
     {
         Vector3 direction = (player.transform.position - transform.position).normalized;
         enemyRigidbody.AddForce(direction * speed);
+
+        if (transform.position.y < minHeight)
+        {
+            Destroy(gameObject);
+        }
     }
 }
